@@ -4,8 +4,16 @@ const app = express();
 import { LoginController } from "./controller/LoginController";
 import {UserController} from "./controller/UserController";
 
+import {UserService} from "./service/UserService";
+import {UserRepository} from "./infra/UserRepository"
+import {MemoryUserRepository} from "./infra/MemoryUserRepository"
+
+
+const userRepository = new MemoryUserRepository();
+const userService = new UserService(userRepository);
+
 const loginController = new LoginController();
-const userController = new UserController();
+const userController = new UserController(userService);
 
 app.use(express.urlencoded({extended: false}));
 app.use(express.json());
