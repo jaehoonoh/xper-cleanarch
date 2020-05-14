@@ -1,5 +1,5 @@
-import { User } from "../domain/User.ts"
-import UserRepository from "../infra/UserRepository.ts"
+import { User } from "../domain/User"
+import { UserRepository } from "../infra/UserRepository"
 
 export class UserService {
 	userRepository:UserRepository;
@@ -8,7 +8,7 @@ export class UserService {
 		this.userRepository = userRepository;	
 	}
 	
-	public createUser(createUserCommand:any):User {
+	public createUser(createUserCommand:any) {
 		this.validateSamePassword(createUserCommand);
 		this.validateUserAlreadyExist(createUserCommand);
 		

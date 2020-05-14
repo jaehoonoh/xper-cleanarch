@@ -9,7 +9,7 @@ export class MemoryUserRepository implements UserRepository {
 		return user;
 	}
 	
-	public findByUsername(username:string ): User {
+	public findByUsername(username:string ): User|undefined {
 		return this.userMap.get(username);
 	}
 
