@@ -1,4 +1,4 @@
-import {UserService} from "../service/UserService";
+import {UserService} from "../application/UserService";
 
 export class UserController {
 	userService: UserService;
@@ -11,6 +11,7 @@ export class UserController {
 		const createUserCommand = req.body;
 		
         console.log('createUserCommand=' + JSON.stringify(createUserCommand));
+
 		this.userService.createUser(createUserCommand);
 		
         res.type("application/json");

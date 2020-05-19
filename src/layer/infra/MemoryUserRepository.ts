@@ -1,5 +1,5 @@
 import {User} from "../domain/User"
-import {UserRepository} from "./UserRepository"
+import {UserRepository} from "../domain/UserRepository"
 
 export class MemoryUserRepository implements UserRepository {
 	userMap: Map<string,User> = new Map();

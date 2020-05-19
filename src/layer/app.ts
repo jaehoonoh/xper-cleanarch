@@ -4,8 +4,8 @@ const app = express();
 import { LoginController } from "./controller/LoginController";
 import {UserController} from "./controller/UserController";
 
-import {UserService} from "./service/UserService";
-import {UserRepository} from "./infra/UserRepository"
+import {UserService} from "./application/UserService";
+import {UserRepository} from "./domain/UserRepository"
 import {MemoryUserRepository} from "./infra/MemoryUserRepository"
 
 

@@ -6,7 +6,7 @@ const request = require('supertest');
 describe('First ', function() {
     it('register user', function() {
         request(app).post('/users')
-            .send({ username: 'user01', password: 'pw', confirm: 'pw' })
+            .send({ username: 'user01', password: 'pw', confirmPassword: 'pw' })
             .set('Accept', 'application/json')
             .expect(200)
             .expect('Content-Type', /json/)
