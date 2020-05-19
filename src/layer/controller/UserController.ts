@@ -1,6 +1,7 @@
 import {UserService} from "../application/UserService";
 
 export class UserController {
+
 	userService: UserService;
 	
 	constructor(userService: UserService) {
@@ -13,7 +14,7 @@ export class UserController {
         console.log('createUserCommand=' + JSON.stringify(createUserCommand));
 
 		this.userService.createUser(createUserCommand);
-		
+
         res.type("application/json");
         res.json({ name: 'jaehoon111' });
     }
