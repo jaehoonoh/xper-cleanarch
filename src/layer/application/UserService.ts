@@ -1,6 +1,6 @@
 import { User } from "../domain/User"
 import { UserRepository } from "../domain/UserRepository"
-import { SignupParams, ResponseMessage } from "../domain/SignUp";
+import { SignupRequest, BaseResponse } from "./dto/SignUp";
 
 export class UserService {
 	userRepository:UserRepository;
@@ -17,14 +17,20 @@ export class UserService {
 	}
 	
 	private validateSamePassword(createUserCommand:any) {
-		if ( createUserCommand.password != createUserCommand.confirmPassword ) {
+		if ( this.passwordIsEqualToConfirmPassword(createUserCommand) ) {
 			throw Error("Password doesn't match confirmPassword.");
 		}
 	}
-	
-	
+
+	private passwordIsEqualToConfirmPassword(createUserCommand: any) {
+		return createUserCommand.password != createUserCommand.confirmPassword;
+	}
+
 	private validateUserAlreadyExist(createUserCommand:any) {
-		// ??
+		const user = this.userRepository.findByUsername(createUserCommand.username);
+		if ( user != undefined ) {
+
+		}
 	}
 	
 }

@@ -1,11 +1,11 @@
-import { SignupService } from './../services/SignupService';
-import { SignupParams, ResponseMessage } from "../domain/SignUp";
+import { SignupService } from '../application/SignupService';
+import { SignupRequest, BaseResponse } from "../application/dto/SignUp";
 
 export class SignupController {
     public create(req, res): string {
         let message;
         // TODO : check parameter type
-        const params: SignupParams = req.body;
+        const params: SignupRequest = req.body;
         const { username, password } = params;
         // response
         res.type("application/json");
@@ -13,7 +13,7 @@ export class SignupController {
         // service
         const signupService = new SignupService();
 
-        let responseMessage: ResponseMessage = {} as ResponseMessage;
+        let responseMessage: BaseResponse = {} as BaseResponse;
 
         if (typeof username != 'string' || username == null || username == "") {
             responseMessage.message = "잘못된 값입니다.";

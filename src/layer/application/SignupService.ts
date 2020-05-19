@@ -1,11 +1,11 @@
-import {ResponseMessage, SignupParams} from "../domain/SignUp";
+import {BaseResponse, SignupRequest} from "./dto/SignUp";
 
 
 export class SignupService {
 
-    public create(data: SignupParams): ResponseMessage {
+    public create(data: SignupRequest): BaseResponse {
 
-        let responseMessage: ResponseMessage = {} as ResponseMessage;
+        let responseMessage: BaseResponse = {} as BaseResponse;
         // TODO : 사용자 이름, 암호 유효성 검사 - 길이 체크만
         if (data.username.length < 3 || data.username.length > 20) {
             responseMessage.message = "사용자 이름이 잘못 되었습니다."

@@ -10,6 +10,9 @@ import {UserRepository} from "./domain/UserRepository"
 import {MemoryUserRepository} from "./infra/MemoryUserRepository"
 
 
+// Application Configuration
+
+// DI
 const userRepository = new MemoryUserRepository();
 const userService = new UserService(userRepository);
 
@@ -22,6 +25,7 @@ const signupController = new SignupController();
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
+// Controller URL Mapping
 app.post('/users', function (req, res) {
     console.log('Hello2:' + req.body);
     userController.create(req, res);
