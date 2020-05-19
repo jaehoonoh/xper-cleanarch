@@ -1,3 +1,4 @@
+import {ResponseMessage, SignupParams} from "../domain/SignUp";
 
 
 export class SignupService {

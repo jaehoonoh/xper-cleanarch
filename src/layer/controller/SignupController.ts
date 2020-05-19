@@ -1,4 +1,6 @@
 import { SignupService } from './../services/SignupService';
+import { SignupParams, ResponseMessage } from "../domain/SignUp";
+
 export class SignupController {
     public create(req, res): string {
         let message;

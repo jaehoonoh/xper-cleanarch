@@ -1,5 +1,6 @@
 import { User } from "../domain/User"
 import { UserRepository } from "../domain/UserRepository"
+import { SignupParams, ResponseMessage } from "../domain/SignUp";
 
 export class UserService {
 	userRepository:UserRepository;
