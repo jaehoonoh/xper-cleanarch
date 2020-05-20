@@ -37,6 +37,4 @@ app.post('/signup', (req, res) => {
     signupController.create(req, res);
 });
 
-app.listen(3000);
-
 export { app };

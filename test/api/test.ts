@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { app } from '../src/layer/app';
+import { app } from '../../src/layer/app';
 
 const request = require('supertest');
 
