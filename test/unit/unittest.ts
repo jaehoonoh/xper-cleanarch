@@ -1,8 +1,3 @@
-describe("unit test", function() {
-    it('test', function() {
-
-    })
-})
 import * as assert from "assert";
 
 function fizzbuzz(number: number) {
