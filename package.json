@@ -8,7 +8,8 @@
     "layer": "ts-node-dev --respawn --transpileOnly ./src/layer/app.ts",
     "function": "ts-node-dev --respawn --transpileOnly ./src/function/app.ts",
     "component": "ts-node-dev --respawn --transpileOnly ./src/component/app.ts",
-    "test": "node_modules/mocha/bin/mocha -r ts-node/register test/**/*.ts"
+    "test": "node_modules/mocha/bin/mocha -r ts-node/register test/**/*.ts",
+    "unittest": "node_modules/mocha/bin/mocha -r ts-node/register test/unit/*.ts"
   },
   "keywords": [],
   "author": "",
