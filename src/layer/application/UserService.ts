@@ -32,7 +32,10 @@ export class UserService {
 
 		}
 	}
-	
+
+	authenticate(username: string, password: string) {
+
+	}
 }
 
 

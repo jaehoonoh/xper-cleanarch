@@ -16,7 +16,7 @@ import {MemoryUserRepository} from "./infra/MemoryUserRepository"
 const userRepository = new MemoryUserRepository();
 const userService = new UserService(userRepository);
 
-const loginController = new LoginController();
+const loginController = new LoginController(userService);
 
 const userController = new UserController(userService);
 const signupController = new SignupController();
