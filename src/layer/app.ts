@@ -37,4 +37,9 @@ app.post('/signup', (req, res) => {
     signupController.create(req, res);
 });
 
+app.post('/login', (req, res) => {
+    console.log("login : " + JSON.stringify(req.body));
+    loginController.login(req, res);
+});
+
 export { app };

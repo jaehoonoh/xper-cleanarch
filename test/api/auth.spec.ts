@@ -8,7 +8,7 @@ describe('Authentication', function() {
         request(app)
             .post('/login')
             .send({username:'NOT_REGISTERED_USER', password: 'pw'})
-            .expect(200,
+            .expect(404,
                 { message: 'No such user.'})
             .end(function (err,res) { if ( err ) throw err; });
     });
