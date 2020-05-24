@@ -1,6 +1,7 @@
 import { User } from "../domain/User"
 import { UserRepository } from "../domain/UserRepository"
 import { SignupRequest, BaseResponse } from "./dto/SignUp";
+import {NoSuchUserException, PasswordIncorrectException} from "../domain/AuthenticationError";
 
 export class UserService {
 	userRepository:UserRepository;
@@ -33,8 +34,15 @@ export class UserService {
 		}
 	}
 
-	authenticate(username: string, password: string) {
-		throw Error("No Such User.");
+	authenticate(username: string, password: string) : boolean {
+		const user = this.userRepository.findByUsername(username);
+		if ( !user )
+			throw new NoSuchUserException(username);
+
+		if ( user.password != password )
+			throw new PasswordIncorrectException(username)
+
+		return true;
 	}
 }
 

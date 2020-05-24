@@ -1,6 +1,7 @@
 import { UserService } from "../../../../src/layer/application/UserService";
 import {MemoryUserRepository} from "../../../../src/layer/infra/MemoryUserRepository";
 import * as assert from "assert";
+import { NoSuchUserException, PasswordIncorrectException } from "../../../../src/layer/domain/AuthenticationError";
 
 describe('UsserService', function() {
     describe('authenticate', function() {
@@ -10,33 +11,31 @@ describe('UsserService', function() {
             const userService = new UserService(userRepository);
 
             assert.throws(() => { userService.authenticate("NOT_EXISTING_USER","password"); },
-                Error("No Such User.")
+                new NoSuchUserException("NOT_EXISTING_USER")
                 );
         })
 
-        it("check only exception type", function() {
-            //assert.throws(() => { throw Error("abc"); }, Error);
-            function doSomething() {
-                throw Error("abc");
-            }
+        it("PasswordIncorrectException for incorrect password", function() {
+            let userRepository = new MemoryUserRepository();
+            const userService = new UserService(userRepository);
 
-            assert.throws(doSomething, Error);
+            let user = {username:"jaehoon", password: "password"};
+            userRepository.save(user);
+
+            assert.throws(() => { userService.authenticate("jaehoon","incorrect"); },
+                new PasswordIncorrectException("jaehoon")
+            );
         });
 
-        it("check exception type its message", function() {
-            assert.throws(() => { throw Error(""); }, Error("abc"));
-        });
+        it("should succeed when username and password matched", function() {
+            let userRepository = new MemoryUserRepository();
+            const userService = new UserService(userRepository);
 
-        it("check exception and its message", function() {
-            assert.throws(() => { throw Error("message"); }, Error("message"));
-        });
+            let user = {username:"jaehoon", password: "password"};
+            userRepository.save(user);
 
-        it("check exception and its message", function() {
-            assert.throws(() => { throw Error("messageActual"); }, Error("messageExpected"));
-        });
-
-        it("exception", function() {
-            assert.throws(() => { }, Error);
+            const isAuthenticated = userService.authenticate("jaehoon","password");
+            assert.strictEqual(isAuthenticated, true);
         });
     })
 })
