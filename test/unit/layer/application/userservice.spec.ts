@@ -19,8 +19,8 @@ describe('UsserService', function() {
             let userRepository = new MemoryUserRepository();
             const userService = new UserService(userRepository);
 
-            let user = {username:"jaehoon", password: "password"};
-            userRepository.save(user);
+            let user = {username:"jaehoon", password: "password", confirmPassword: "password"};
+            userService.createUser(user)
 
             assert.throws(() => { userService.authenticate("jaehoon","incorrect"); },
                 new PasswordIncorrectException("jaehoon")

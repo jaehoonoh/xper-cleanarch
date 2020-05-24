@@ -35,14 +35,18 @@ export class UserService {
 	}
 
 	authenticate(username: string, password: string) : boolean {
-		const user = this.userRepository.findByUsername(username);
+		const user : User|undefined = this.userRepository.findByUsername(username);
 		if ( !user )
 			throw new NoSuchUserException(username);
 
-		if ( user.password != password )
-			throw new PasswordIncorrectException(username)
+		if ( this.passwordMatched(user, password) )
+			return true;
 
-		return true;
+		throw new PasswordIncorrectException(username);
+	}
+
+	private passwordMatched(user:User, password) : boolean {
+		return user.password != password;
 	}
 }
 
