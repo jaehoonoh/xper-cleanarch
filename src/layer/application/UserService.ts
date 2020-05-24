@@ -34,7 +34,7 @@ export class UserService {
 	}
 
 	authenticate(username: string, password: string) {
-
+		throw Error("No Such User.");
 	}
 }
 

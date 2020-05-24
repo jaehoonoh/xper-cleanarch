@@ -9,8 +9,9 @@ describe('UsserService', function() {
             let userRepository = new MemoryUserRepository();
             const userService = new UserService(userRepository);
 
-            let loginRequest = { username: 'NOT_EXISTING_USER', password: 'pw' };
-
+            assert.throws(() => { userService.authenticate("NOT_EXISTING_USER","password"); },
+                Error("No Such User.")
+                );
         })
 
         it("check only exception type", function() {
