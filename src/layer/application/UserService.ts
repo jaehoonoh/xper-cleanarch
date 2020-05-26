@@ -39,13 +39,13 @@ export class UserService {
 		if ( !user )
 			throw new NoSuchUserException(username);
 
-		if ( this.passwordMatched(user, password) )
+		if ( this.isPasswordMatched(user, password) )
 			return true;
 
 		throw new PasswordIncorrectException(username);
 	}
 
-	private passwordMatched(user:User, password) : boolean {
+	private isPasswordMatched(user:User, password) : boolean {
 		return user.password != password;
 	}
 }
