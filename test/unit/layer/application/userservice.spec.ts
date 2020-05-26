@@ -31,8 +31,8 @@ describe('UsserService', function() {
             let userRepository = new MemoryUserRepository();
             const userService = new UserService(userRepository);
 
-            let user = {username:"jaehoon", password: "password"};
-            userRepository.save(user);
+            let user = {username:"jaehoon", password: "password", confirmPassword: "password"};
+            userService.createUser(user)
 
             const isAuthenticated = userService.authenticate("jaehoon","password");
             assert.strictEqual(true, isAuthenticated);
