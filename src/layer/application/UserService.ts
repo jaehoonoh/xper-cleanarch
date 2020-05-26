@@ -2,6 +2,18 @@ import { User } from "../domain/User"
 import { UserRepository } from "../domain/UserRepository"
 import { SignupRequest, BaseResponse } from "./dto/SignUp";
 
+export class NoSuchUserException extends Error {
+	constructor(username: string) {
+		super("No Such User: " + username);
+	}
+}
+
+export class IncorrectPasswordException extends Error {
+	constructor(username: string) {
+		super("Incorrected" + username);
+	}
+}
+
 export class UserService {
 	userRepository:UserRepository;
 	
@@ -31,6 +43,16 @@ export class UserService {
 		if ( user != undefined ) {
 
 		}
+	}
+
+	authenticate(username: string, password: string) : boolean {
+		const user = this.userRepository.findByUsername(username);
+		if (!user)
+			throw new NoSuchUserException(username);
+		if (user.password != password)
+			throw new IncorrectPasswordException(username);
+
+		return true;
 	}
 	
 }
