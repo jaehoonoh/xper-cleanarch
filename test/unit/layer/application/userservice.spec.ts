@@ -5,7 +5,7 @@ import { NoSuchUserException, PasswordIncorrectException } from "../../../../src
 
 describe('UsserService', function() {
     describe('authenticate', function() {
-        it('NoSuchUserException for non exiting user', function() {
+        it('should throw NoSuchUserException for non exiting user', function() {
 
             let userRepository = new MemoryUserRepository();
             const userService = new UserService(userRepository);
@@ -15,7 +15,7 @@ describe('UsserService', function() {
                 );
         })
 
-        it("PasswordIncorrectException for incorrect password", function() {
+        it("should throw PasswordIncorrectException for incorrect password", function() {
             let userRepository = new MemoryUserRepository();
             const userService = new UserService(userRepository);
 
@@ -27,7 +27,7 @@ describe('UsserService', function() {
             );
         });
 
-        it("should succeed when username and password matched", function() {
+        it("should return true when username and password matched", function() {
             let userRepository = new MemoryUserRepository();
             const userService = new UserService(userRepository);
 
@@ -35,7 +35,7 @@ describe('UsserService', function() {
             userRepository.save(user);
 
             const isAuthenticated = userService.authenticate("jaehoon","password");
-            assert.strictEqual(isAuthenticated, true);
+            assert.strictEqual(true, isAuthenticated);
         });
     })
 })
