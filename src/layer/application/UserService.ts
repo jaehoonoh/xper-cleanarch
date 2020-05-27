@@ -1,6 +1,5 @@
-import { User } from "../domain/User"
-import { UserRepository } from "../domain/UserRepository"
-import { SignupRequest, BaseResponse } from "./dto/SignUp";
+import {User} from "../domain/User"
+import {UserRepository} from "../domain/UserRepository"
 import {NoSuchUserException, PasswordIncorrectException} from "../domain/AuthenticationError";
 
 export class UserService {
@@ -36,25 +35,13 @@ export class UserService {
 
 	authenticate(username: string, password: string) : boolean {
 		const user : User|undefined = this.userRepository.findByUsername(username);
-		if ( this.notFound(user) )
+		if ( !user )
 			throw new NoSuchUserException(username);
 
-		if (this.isPasswordMatched(user, password)) {
-			return true;
+		if (!user.isPasswordMatched(password)) {
+			throw new PasswordIncorrectException(username);
 		}
-
-		throw new PasswordIncorrectException(username);
-	}
-
-	private notFound(user: User | undefined) {
-		return !user;
-	}
-
-	private isPasswordMatched(user:User|undefined, password) : boolean {
-		if ( user ) {
-			return user.password == password;
-		}
-		return false;
+		return true;
 	}
 }
 

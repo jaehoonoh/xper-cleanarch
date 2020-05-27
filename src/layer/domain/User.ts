@@ -6,4 +6,8 @@ export class User {
 		this.username = username;
 		this.password = password;
 	}
+
+	public isPasswordMatched(password) : boolean {
+		return this.password == password;
+	}
 }

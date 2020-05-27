@@ -6,7 +6,6 @@ import { NoSuchUserException, PasswordIncorrectException } from "../../../../src
 describe('UsserService', function() {
     describe('authenticate', function() {
         it('should throw NoSuchUserException for non exiting user', function() {
-
             let userRepository = new MemoryUserRepository();
             const userService = new UserService(userRepository);
 
