@@ -1,4 +1,8 @@
-import {UserService} from "../../../../src/layer/application/UserService";
+import {
+    PasswordNotMatchedException,
+    UserAlradyExistException,
+    UserService
+} from "../../../../src/layer/application/UserService";
 import {MemoryUserRepository} from "../../../../src/layer/infra/MemoryUserRepository";
 import * as assert from "assert";
 import {
@@ -9,15 +13,44 @@ import {
 
 
 describe('UsserService', function () {
+    let userService: UserService;
+    let userRepository: MemoryUserRepository;
+
+    beforeEach(function () {
+        userRepository = new MemoryUserRepository();
+        userService = new UserService(userRepository);
+    });
+
+    describe('createUser', function () {
+        it('should throw PasswordNotMatchedException when password and confirmPassword not matched', function () {
+            let username = "jaehoon";
+            let user = {username: username, password: "password", confirmPassword: "notMatchedWithPassword"};
+
+            assert.throws( () => { userService.createUser(user); },
+                { name: PasswordNotMatchedException.name, username: username }
+            );
+        })
+
+        it('should succeed when user not already registered and password=confirmPassword', function () {
+            let username = "jaehoon";
+            let user = {username: username, password: "password", confirmPassword: "password"};
+
+            userService.createUser(user);
+        })
+
+        it('should throw UserAlreadyExistException when try to add existing username', function () {
+            let username = "jaehoon";
+            let user = {username: username, password: "password", confirmPassword: "password"};
+
+            userService.createUser(user);
+
+            assert.throws( () => { userService.createUser(user); },
+                { name: UserAlradyExistException.name, username: username }
+            );
+        })
+    });
+
     describe('authenticate', function () {
-        let userService: UserService;
-        let userRepository: MemoryUserRepository;
-
-        beforeEach(function () {
-            userRepository = new MemoryUserRepository();
-            userService = new UserService(userRepository);
-        });
-
         it('should throw NoSuchUserException for non exiting user', function () {
             let notexistinguser = "NOT_EXISTING_USER";
 

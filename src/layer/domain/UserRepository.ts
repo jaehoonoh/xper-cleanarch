@@ -6,6 +6,5 @@ export interface UserRepository {
 	findByUsername(username:string ): User|undefined;
 
 	getFailedLoginCount(username: string): number;
-
 	saveFailedLoginCount(username: string, failedLoginCount: number): void;
 }

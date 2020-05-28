@@ -6,6 +6,32 @@ import {
 	PasswordIncorrectException
 } from "../domain/AuthenticationError";
 
+export class UserAlradyExistException implements Error {
+	private username: string;
+
+	constructor(username: string) {
+		this.name = UserAlradyExistException.name;
+		this.message = "UserAlreadyExistException"
+		this.username = username;
+	}
+
+	message: string;
+	name: string;
+}
+
+export class PasswordNotMatchedException implements Error {
+	private username: string;
+
+	constructor(username: string) {
+		this.name = PasswordNotMatchedException.name;
+		this.message = "";
+		this.username = username;
+	}
+
+	message: string;
+	name: string;
+}
+
 export class UserService {
 	userRepository:UserRepository;
 	
@@ -16,13 +42,18 @@ export class UserService {
 	public createUser(createUserCommand:any) {
 		this.validateSamePassword(createUserCommand);
 		this.validateUserAlreadyExist(createUserCommand);
-		
+
+		let user = this.userRepository.findByUsername(createUserCommand.username);
+		if ( user ) {
+			throw new UserAlradyExistException(createUserCommand.username);
+		}
+
 		this.userRepository.save(new User(createUserCommand.username, createUserCommand.password))
 	}
 	
 	private validateSamePassword(createUserCommand:any) {
 		if ( this.passwordIsEqualToConfirmPassword(createUserCommand) ) {
-			throw Error("Password doesn't match confirmPassword.");
+			throw new PasswordNotMatchedException(createUserCommand.username);
 		}
 	}
 
