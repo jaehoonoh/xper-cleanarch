@@ -9,13 +9,6 @@ function login(username: string, incorrectPassword: string) {
     return requestLogin;
 }
 
-function assertIncorrectPassword(requestLogin: request.SuperAgentRequest, status: number, incorrectPasswordMessage: string) {
-    requestLogin.expect(status, {message: incorrectPasswordMessage})
-        .end(function (err, res) {
-            if (err) throw err;
-        });
-}
-
 describe('Authentication', function() {
     it('a user should not be loggied in when there is no user account', function() {
         let username = 'NOT_REGISTERED_USER';
@@ -57,7 +50,10 @@ describe('Authentication', function() {
         let requestLogin = login(username, "IncorrectPassword");
 
         // Assert
-        assertIncorrectPassword(requestLogin, BAD_REQUEST, incorrectPasswordMessage);
+        requestLogin.expect(BAD_REQUEST, {message: incorrectPasswordMessage})
+            .end(function (err, res) {
+                if (err) throw err;
+            });
     });
 
     // 의도가 한 눈에 안 들어온다. .... 팀 동료, 미래의 내가, 나중에 코드를 해독을 해야 한다.
