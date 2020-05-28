@@ -1,5 +1,5 @@
 import {UserService} from "../application/UserService";
-import {NoSuchUserException} from "../domain/AuthenticationError";
+import {NoSuchUserException, PasswordIncorrectException} from "../domain/AuthenticationError";
 
 export class LoginController {
     private userService: UserService;
@@ -12,17 +12,21 @@ export class LoginController {
         return "/login";
     }
 
-    login(req: any, res: any) {
+    public login(req: any, res: any) {
         const user = req.body;
 
         try {
             this.userService.authenticate(user.username, user.password);
         }
         catch ( err ) {
-            console.log(err);
             if ( err instanceof NoSuchUserException ) {
                 res.status(404);
                 res.json({message: 'Not Registered : ' + user.username});
+                return;
+            }
+            if ( err instanceof PasswordIncorrectException) {
+                res.status(400);
+                res.json({ message: 'Incorrect Password'});
                 return;
             }
         }
