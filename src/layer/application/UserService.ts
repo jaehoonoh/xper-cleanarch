@@ -1,6 +1,10 @@
 import {User} from "../domain/User"
 import {UserRepository} from "../domain/UserRepository"
-import {NoSuchUserException, PasswordIncorrectException} from "../domain/AuthenticationError";
+import {
+	FailedLoginLimitExceedException,
+	NoSuchUserException,
+	PasswordIncorrectException
+} from "../domain/AuthenticationError";
 
 export class UserService {
 	userRepository:UserRepository;
@@ -33,15 +37,38 @@ export class UserService {
 		}
 	}
 
-	authenticate(username: string, password: string) : boolean {
+	public authenticate(username: string, password: string) : boolean {
 		const user : User|undefined = this.userRepository.findByUsername(username);
 		if ( !user )
 			throw new NoSuchUserException(username);
 
 		if (!user.isPasswordMatched(password)) {
-			throw new PasswordIncorrectException(username);
+			this.increaseFailedLoginCount(username);
+			let failedLoginCount = this.getFailedLoginCount(username);
+
+			if ( failedLoginCount > 3 ) {
+				throw new FailedLoginLimitExceedException(username, failedLoginCount);
+			}
+
+			throw new PasswordIncorrectException(username, failedLoginCount);
 		}
+
+		this.resetFailedLoginCountFor(username);
 		return true;
+	}
+
+	private resetFailedLoginCountFor(username: string) {
+		this.userRepository.saveFailedLoginCount(username, 0);
+	}
+
+	private increaseFailedLoginCount(username: string) {
+		let failedLoginCount = this.getFailedLoginCount(username);
+		failedLoginCount = failedLoginCount + 1;
+		this.userRepository.saveFailedLoginCount(username,failedLoginCount);
+	}
+
+	public getFailedLoginCount(username: string) : number {
+		return this.userRepository.getFailedLoginCount(username);
 	}
 }
 
