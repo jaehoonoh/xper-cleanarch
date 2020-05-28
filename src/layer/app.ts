@@ -11,8 +11,6 @@ import {MemoryUserRepository} from "./infra/MemoryUserRepository"
 
 
 // Application Configuration
-
-// DI
 const userRepository = new MemoryUserRepository();
 const userService = new UserService(userRepository);
 

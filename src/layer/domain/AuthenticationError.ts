@@ -11,8 +11,14 @@ export class NoSuchUserException implements Error {
     stack: string;
 }
 
-export class PasswordIncorrectException extends Error {
+export class PasswordIncorrectException implements Error {
     constructor(username:string) {
-        super("Incorrect Password: " + username);
+        this.message = "Incorrect Password: " + username;
+        this.name = "IncorrectPassword";
+        this.stack = (<any>new Error()).stack;
     }
+
+    message: string;
+    name: string;
+    stack: string;
 }
