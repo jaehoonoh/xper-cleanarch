@@ -43,11 +43,6 @@ export class UserService {
 		this.validateSamePassword(createUserCommand);
 		this.validateUserAlreadyExist(createUserCommand);
 
-		let user = this.userRepository.findByUsername(createUserCommand.username);
-		if ( user ) {
-			throw new UserAlradyExistException(createUserCommand.username);
-		}
-
 		this.userRepository.save(new User(createUserCommand.username, createUserCommand.password))
 	}
 	
@@ -64,7 +59,7 @@ export class UserService {
 	private validateUserAlreadyExist(createUserCommand:any) {
 		const user = this.userRepository.findByUsername(createUserCommand.username);
 		if ( user != undefined ) {
-
+			throw new UserAlradyExistException(createUserCommand.username);
 		}
 	}
 
@@ -74,21 +69,25 @@ export class UserService {
 			throw new NoSuchUserException(username);
 
 		if (!user.isPasswordMatched(password)) {
-			this.increaseFailedLoginCount(username);
-			let failedLoginCount = this.getFailedLoginCount(username);
-
-			if ( failedLoginCount > 3 ) {
-				throw new FailedLoginLimitExceedException(username, failedLoginCount);
-			}
-
-			throw new PasswordIncorrectException(username, failedLoginCount);
+			this.checkFailedLoginCountExceedLimit(username);
 		}
 
-		this.resetFailedLoginCountFor(username);
+		this.clearFailedLoginCountFor(username);
 		return true;
 	}
 
-	private resetFailedLoginCountFor(username: string) {
+	private checkFailedLoginCountExceedLimit(username: string) {
+		this.increaseFailedLoginCount(username);
+		let failedLoginCount = this.getFailedLoginCount(username);
+
+		if ( failedLoginCount > 3 ) {
+			throw new FailedLoginLimitExceedException(username, failedLoginCount);
+		}
+
+		throw new PasswordIncorrectException(username, failedLoginCount);
+	}
+
+	private clearFailedLoginCountFor(username: string) {
 		this.userRepository.saveFailedLoginCount(username, 0);
 	}
 

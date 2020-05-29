@@ -108,7 +108,6 @@ describe('UsserService', function () {
             assert.strictEqual(failedLoginCount, 0);
         })
 
-
         function userFailedToLoginThreeTimes(username: string) {
             try { userService.authenticate(username, "incorrect"); } catch ( err ) {}
             try { userService.authenticate(username, "incorrect"); } catch ( err ) {}
