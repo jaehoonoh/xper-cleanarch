@@ -23,7 +23,6 @@ describe('LoginController', function () {
         })
 
         it('should return [400,Incorrect Password] for Incorrect Password Login', function () {
-
             let userService = { authenticate: function() { throw new PasswordIncorrectException(""); } };
             let loginController = new LoginController(userService as unknown as UserService);
 

@@ -1,5 +1,9 @@
 import {UserService} from "../application/UserService";
-import {NoSuchUserException, PasswordIncorrectException} from "../domain/AuthenticationError";
+import {
+    FailedLoginLimitExceedException,
+    NoSuchUserException,
+    PasswordIncorrectException
+} from "../domain/AuthenticationError";
 
 export class LoginController {
     private userService: UserService;
@@ -28,6 +32,9 @@ export class LoginController {
                 res.status(400);
                 res.json({ message: 'Incorrect Password'});
                 return;
+            }
+            if ( err instanceof FailedLoginLimitExceedException ) {
+
             }
         }
 
